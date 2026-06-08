@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarHubKE - Create Account</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7a8b3a 0%, #4a5d23 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 420px;
+        }
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #4a5d23;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .tagline {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 24px;
+            font-size: 22px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #7a8b3a;
+        }
+        .error {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #7a8b3a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #4a5d23;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74,93,35,0.3);
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .login-link a {
+            color: #7a8b3a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .login-link a:hover { text-decoration: underline; }
+        .success-msg {
+            display: none;
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">CARHUB<span style="color:#d4a017;">KE</span></div>
+        <div class="tagline">Kenya's Premium Car Marketplace</div>
+        <h2>Create Account</h2>
+        <div class="success-msg" id="successMsg"></div>
+        <form id="signupForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName" placeholder="John K. Mwangi" required>
+                <div class="error" id="nameError">Please enter your full name</div>
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="john@email.com" required>
+                <div class="error" id="emailError">Enter a valid email address</div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Min 6 characters" required>
+                <div class="error" id="passError">Password must be at least 6 characters</div>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Repeat password" required>
+                <div class="error" id="matchError">Passwords do not match</div>
+            </div>
+            <button type="submit">Create Account</button>
+        </form>
+        <div class="login-link">
+            Already have an account? <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset errors
+            document.querySelectorAll('.error').forEach(el => el.style.display = 'none');
+            
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            let valid = true;
+
+            if(fullName.length < 2) {
+                document.getElementById('nameError').style.display = 'block';
+                valid = false;
+            }
+            if(!email.includes('@') || !email.includes('.')) {
+                document.getElementById('emailError').style.display = 'block';
+                valid = false;
+            }
+            if(password.length < 6) {
+                document.getElementById('passError').style.display = 'block';
+                valid = false;
+            }
+            if(password !== confirmPassword) {
+                document.getElementById('matchError').style.display = 'block';
+                valid = false;
+            }
+
+            if(valid) {
+                // Store user data in localStorage (simulating backend)
+                const userData = {
+                    fullName: fullName,                 email: email,
+                    password: password,
+                    registeredAt: new Date().toISOString()
+                };
+                localStorage.setItem('carhubUser', JSON.stringify(userData));
+                
+                // Show success and redirect
+                const msg = document.getElementById('successMsg');
+                msg.textContent = 'Account created successfully! Redirecting...';
+                msg.style.display = 'block';
+                
+                setTimeout(() => {
+                    window.location.href = 'login.html?newuser=1&name=' + encodeURIComponent(fullName);
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
